@@ -152,6 +152,7 @@ describe('AppointmentMerckSearch', () => {
         language: 'en',
       })
     );
+    expect(await screen.findByText('Canine Fever')).toBeInTheDocument();
     expect(screen.queryByText('Blocked result')).not.toBeInTheDocument();
     expect(screen.getByText('copyright notice')).toBeInTheDocument();
   });
