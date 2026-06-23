@@ -571,6 +571,12 @@ const TreatmentStep = ({
       // Persist any staged service/package rows, then rehydrate from the backend
       // bootstrap so the rows carry real ids/billing status before Invoice opens.
       await persistTreatmentItems(organisationId, encounterId, encounter.services);
+
+      const persistedPrescriptions = encounter.prescription.filter((rx) => rx.id);
+      await Promise.allSettled(
+        persistedPrescriptions.map((rx) => finalizePrescription(organisationId, rx.id))
+      );
+
       const bootstrap = await getAppointmentWorkspaceBootstrap(organisationId, appointmentId);
       mergeEncounterData(appointmentId, normalizeWorkspaceBootstrapForEncounter(bootstrap));
     } catch (error) {
