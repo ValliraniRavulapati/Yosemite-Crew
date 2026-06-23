@@ -8,12 +8,11 @@ const ALLOWED_ATTR = ['class'];
 export const hasDom = (): boolean => globalThis.window !== undefined;
 
 /** Sanitize editor HTML before storing/sending to the backend. */
-export const sanitizeRichText = (html = ''): string => {
-  const value = html;
+export const sanitizeRichText = (html: string = ''): string => {
   // On the server (no DOM) fall back to stripping all tags so no unsanitized
   // markup is ever emitted during SSR.
-  if (!hasDom()) return replaceNbsp(stripHtmlTags(value));
-  return DOMPurify.sanitize(value, { ALLOWED_TAGS, ALLOWED_ATTR });
+  if (!hasDom()) return replaceNbsp(stripHtmlTags(html));
+  return DOMPurify.sanitize(html, { ALLOWED_TAGS, ALLOWED_ATTR });
 };
 
 const stripHtmlTags = (html: string): string => {
